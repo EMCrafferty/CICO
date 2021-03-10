@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exampleItems">
+        <item>2 Eggs</item>
+        <item>1oz Bacon</item>
+        <item>1oz Cheese</item>
+        <item>2 slices Bread</item>
+    </string-array>
+</resources>

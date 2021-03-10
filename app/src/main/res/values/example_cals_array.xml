@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="exampleCals">
+        <item>140</item>
+        <item>150</item>
+        <item>114</item>
+        <item>140</item>
+    </string-array>
+</resources>

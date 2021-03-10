@@ -6,4 +6,7 @@
     <string name="search">search</string>
     <string name="data">data</string>
     <string name="settings">settings</string>
+    <string name="food">Food</string>
+    <string name="kcal">kcal</string>
+    <string name="total">Total</string>
 </resources>
