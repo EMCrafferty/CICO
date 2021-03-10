@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CICO</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="log">log</string>
+    <string name="search">search</string>
+    <string name="data">data</string>
+</resources>
