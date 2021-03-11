@@ -89,7 +89,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="494"
+        android:text="544"
         app:layout_constraintBottom_toBottomOf="@+id/textTotal"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textTotal" />
