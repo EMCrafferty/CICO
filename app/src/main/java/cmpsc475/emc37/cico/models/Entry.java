@@ -3,17 +3,19 @@ package cmpsc475.emc37.cico.models;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Entity(tableName = "entries")
 public class Entry {
-  private static class Food {
+  public static class Food {
     private String name;
     private int kcal;
+    private double servings;
 
     public String getName() {
       return name;
@@ -31,25 +33,44 @@ public class Entry {
       this.kcal = kcal;
     }
 
-    public Food(String name, int kcal) {
+    public double getServings() {
+      return servings;
+    }
+
+    public void setServings(double servings) {
+      this.servings = servings;
+    }
+
+    public Food(String name, int kcal, double servings) {
       setName(name);
       setKcal(kcal);
+      setServings(servings);
     }
   }
 
-  @PrimaryKey(autoGenerate = true)
+@PrimaryKey(autoGenerate = true)
   private Integer id;
 
   private int kcal;
   @NonNull
+  @TypeConverters(FoodConverter.class)
   private List<Food> foods;
   @NonNull
-  private LocalDateTime timestamp;
+  @TypeConverters(TimestampConverter.class)
+  private OffsetDateTime timestamp;
 
-  public Entry(int kcal, @NotNull List<Food> foods, @NotNull LocalDateTime timestamp) {
+  public Entry(int kcal, @NotNull List<Food> foods, @NotNull OffsetDateTime timestamp) {
     this.kcal = kcal;
     this.foods = foods;
     this.timestamp = timestamp;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   public int getKcal() {
@@ -70,11 +91,11 @@ public class Entry {
   }
 
   @NotNull
-  public LocalDateTime getTimestamp() {
+  public OffsetDateTime getTimestamp() {
     return timestamp;
   }
 
-  public void setTimestamp(@NotNull LocalDateTime timestamp) {
+  public void setTimestamp(@NotNull OffsetDateTime timestamp) {
     this.timestamp = timestamp;
   }
 }

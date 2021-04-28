@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 import cmpsc475.emc37.cico.ui.main.SectionsPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
+  public static final String FDA_FDC_KEY = BuildConfig.FDA_FDC_KEY;
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabs = findViewById(R.id.tabs);
     tabs.setupWithViewPager(viewPager);
     //
+
   }
 
 }
