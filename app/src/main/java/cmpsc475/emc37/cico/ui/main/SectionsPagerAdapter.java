@@ -2,11 +2,14 @@ package cmpsc475.emc37.cico.ui.main;
 
 import android.content.Context;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import org.jetbrains.annotations.NotNull;
 
 import cmpsc475.emc37.cico.R;
 
@@ -17,7 +20,14 @@ import cmpsc475.emc37.cico.R;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
   @StringRes
-  private static final int[] TAB_TITLES = new int[]{R.string.log, R.string.search, R.string.data};
+  private static final int[] TAB_TITLES = new int[]{
+      R.string.log, R.string.search, R.string.data
+  };
+
+  @LayoutRes
+  private static final int[] LAYOUT_IDS = new int[]{
+      R.layout.log_fragment, R.layout.search_fragment, R.layout.data_fragment
+  };
   private final Context mContext;
 
   public SectionsPagerAdapter(Context context, FragmentManager fm) {
@@ -25,24 +35,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     mContext = context;
   }
 
+  @NotNull
   @Override
   public Fragment getItem(int position) {
     // getItem is called to instantiate the fragment for the given page.
-    // Return a PlaceholderFragment (defined as a static inner class below).
-     int fragmentID = -1;
-    switch (position) {
-      case 0:
-        fragmentID = R.layout.log_fragment;
-        break;
-      case 1:
-        fragmentID = R.layout.search_fragment;
-        break;
-      case 2:
-        fragmentID = R.layout.data_fragment;
-        break;
-
-    }
-    return new Fragment(fragmentID);
+    return new Fragment(LAYOUT_IDS[position]);
   }
 
   @Nullable
