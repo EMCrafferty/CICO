@@ -46,9 +46,23 @@ public class Entry {
       setKcal(kcal);
       setServings(servings);
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder();
+
+      sb.append("( ")
+        .append(getName()).append(' ')
+        .append(getKcal()).append(' ')
+        .append(getServings()).append(' ')
+        .append(')');
+
+      return sb.toString();
+    }
   }
 
-@PrimaryKey(autoGenerate = true)
+  @PrimaryKey(autoGenerate = true)
   private Integer id;
 
   private int kcal;
@@ -97,5 +111,19 @@ public class Entry {
 
   public void setTimestamp(@NotNull OffsetDateTime timestamp) {
     this.timestamp = timestamp;
+  }
+
+  @NonNull
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getId()).append('\n')
+      .append(getKcal()).append('\n')
+      .append(getTimestamp()).append('\n')
+      .append("{ ");
+    foods.forEach(v -> sb.append(v).append(" "));
+    sb.append("}\n");
+
+    return sb.toString();
   }
 }

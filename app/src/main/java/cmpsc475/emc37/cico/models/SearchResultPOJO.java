@@ -269,4 +269,12 @@ public class SearchResultPOJO {
   public void setFoods(List<FDCFood> foods) {
     this.foods = foods;
   }
+
+  public enum NUTRIENTS {
+    KCAL(1008);
+
+    public final int code;
+
+    NUTRIENTS(int code) { this.code = code; }
+  }
 }

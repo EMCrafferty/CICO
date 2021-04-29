@@ -27,6 +27,10 @@ public class CICORepository {
     return mAllEntries;
   }
 
+  public void deleteAllEntries() {
+    dbWrEx.submit(mEntryDAO::deleteAll);
+  }
+
   public void insert(Entry entry) {
     dbWrEx.execute(() -> mEntryDAO.insert(entry));
   }
