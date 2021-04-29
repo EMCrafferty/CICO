@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onResponse(Call<SearchResultPOJO> call, Response<SearchResultPOJO> response) {
         Log.d("FDCService", "SUCCESS");
-        Log.d("FDCService", String.valueOf(response.body().getFoods().get(0).getFoodNutrients().get(0).getNutrientId()));
+        Log.d("FDCService", String.valueOf(response.body().getFoods().get(0).getFoodNutrients().stream().filter(v -> v.getNutrientId() == 1008).findFirst().get().getValue()));
       }
 
       @Override

@@ -8,16 +8,16 @@ public class SearchResultPOJO {
       int nutrientId;
       int number;
       String name;
-      double amount;
+      double value;
       String unitName;
       String derivationCode;
       String derivationDescription;
 
-      public Nutrients(int nutrientId, int number, String name, double amount, String unitName, String derivationCode, String derivationDescription) {
+      public Nutrients(int nutrientId, int number, String name, double value, String unitName, String derivationCode, String derivationDescription) {
         this.nutrientId = nutrientId;
         this.number = number;
         this.name = name;
-        this.amount = amount;
+        this.value = value;
         this.unitName = unitName;
         this.derivationCode = derivationCode;
         this.derivationDescription = derivationDescription;
@@ -47,12 +47,12 @@ public class SearchResultPOJO {
         this.name = name;
       }
 
-      public double getAmount() {
-        return amount;
+      public double getValue() {
+        return value;
       }
 
-      public void setAmount(double amount) {
-        this.amount = amount;
+      public void setValue(double value) {
+        this.value = value;
       }
 
       public String getUnitName() {
