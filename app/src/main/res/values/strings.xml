@@ -10,4 +10,8 @@
     <string name="kcal">kcal</string>
     <string name="total">Total</string>
     <string name="kcal_g">kcal/100g</string>
+    <string name="grams">g</string>
+    <string name="portion">Portion</string>
+    <string name="fillerNum">420</string>
+    <string name="fillerText">Lorem Ipsum</string>
 </resources>

@@ -28,6 +28,7 @@ import cmpsc475.emc37.cico.models.SearchResultPOJO;
 import cmpsc475.emc37.cico.services.CICORepository;
 import cmpsc475.emc37.cico.services.FDCService;
 import cmpsc475.emc37.cico.services.IFDCService;
+import cmpsc475.emc37.cico.ui.main.AddFoodDialog;
 import cmpsc475.emc37.cico.ui.main.FoodItemAdapter;
 import cmpsc475.emc37.cico.ui.main.SectionsPagerAdapter;
 import cmpsc475.emc37.cico.viewmodels.EntryViewModel;
@@ -38,7 +39,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddFoodDialog.AddFoodClickListener {
   private EntryViewModel entryViewModel;
   private SearchResultViewModel searchResultViewModel;
 
@@ -73,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
     viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override
       public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
       }
 
       @Override
@@ -111,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
     if (searchResultViewModel.getFoodItemAdapter() == null)
       searchResultViewModel.setFoodItemAdapter(new FoodItemAdapter());
     else
-      searchResultViewModel.getFoodItemAdapter().notifyDataSetChanged();
-
+      searchResultViewModel.getFoodItemAdapter()
+                           .notifyDataSetChanged();
 
     searchResultRecyclerView.setAdapter(searchResultViewModel.getFoodItemAdapter());
     searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -136,7 +136,10 @@ public class MainActivity extends AppCompatActivity {
         return false;
       }
     });
-
   }
 
+  @Override
+  public void onAddFoodClick(Object _dialog, Object _id) {
+
+  }
 }
