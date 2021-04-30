@@ -7,6 +7,8 @@ import android.view.Menu;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -22,8 +24,10 @@ import cmpsc475.emc37.cico.models.SearchResultPOJO;
 import cmpsc475.emc37.cico.services.CICORepository;
 import cmpsc475.emc37.cico.services.FDCService;
 import cmpsc475.emc37.cico.services.IFDCService;
+import cmpsc475.emc37.cico.ui.main.FoodItemAdapter;
 import cmpsc475.emc37.cico.ui.main.SectionsPagerAdapter;
 import cmpsc475.emc37.cico.viewmodels.EntryViewModel;
+import cmpsc475.emc37.cico.viewmodels.SearchResultViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +36,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
   private EntryViewModel entryViewModel;
+  private SearchResultViewModel searchResultViewModel;
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,76 +54,62 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabs = findViewById(R.id.tabs);
     tabs.setupWithViewPager(viewPager);
 
+    //
+
     // VIEWMODEL TESTING:
-//    entryViewModel = new ViewModelProvider(this).get(EntryViewModel.class);
     entryViewModel = new ViewModelProvider(
         this,
-        ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(EntryViewModel.class);
+        ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(
+        EntryViewModel.class);
 
-    entryViewModel.getAllEntries()
-                  .observe(this,
-                           entries -> entries.forEach(e -> Log.d("ROOM", ".\n" + e.toString())));
+    searchResultViewModel = new ViewModelProvider(
+        this,
+        ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(
+        SearchResultViewModel.class);
 
-    findViewById(R.id.foodSearch);
-//    entryViewModel.deleteAllEntries();
+    viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+      @Override
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-//    entryViewModel.insert(
-//        new Entry(
-//            420,
-//            Arrays.asList(
-//                new Entry.Food("Egg", 280, 4.0),
-//                new Entry.Food("Egg", 140, 2.0)
-//            ),
-//            OffsetDateTime.now())
-//    );
+      }
 
-    // ROOM TESTING:
-//    CICORepository repo = new CICORepository(getApplication());
-//    repo.getAllEntries()
-//        .observe(this, entries -> entries.forEach(e -> Log.d("ROOM", ".\n" + e.toString())));
-////    repo.deleteAllEntries();
-//    repo.insert(
-//        new Entry(
-//            420,
-//            Arrays.asList(
-//                new Entry.Food("Egg", 280, 4.0),
-//                new Entry.Food("Egg", 140, 2.0)
-//            ),
-//            OffsetDateTime.now())
-//    );
+      @Override
+      public void onPageSelected(int position) {
+        Log.d("viewPager", "onPageSelected: " + position + "\n");
 
-    // RETROFIT TESTING:
+        switch (position) {
+          case 0:
+            Log.d("viewPager", "Log Fragment");
 
-//    Retrofit retrofit = new Retrofit.Builder()
-//        .baseUrl(FDCService.baseURL)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build();
-//
-//    IFDCService fdcService = retrofit.create(IFDCService.class);
-//
-//    Call<SearchResultPOJO> results = fdcService.searchFoods(BuildConfig.FDA_FDC_KEY, "Dorito");
-//
-//    results.enqueue(new Callback<SearchResultPOJO>() {
-//      @Override
-//      public void onResponse(Call<SearchResultPOJO> call, Response<SearchResultPOJO> response) {
-//        Log.d("FDCService", "SUCCESS");
-//        List<SearchResultDTO> resultDTOList = response.body().getFoods().stream().map(SearchResultDTO::parsePOJO).collect(
-//            Collectors.toList());
-//        resultDTOList.forEach(v -> Log.d("FDCService", String.format(
-//            ".\nID: %d\nBRAND NAME: %s\nNAME: %s\nKCAL/100g: %.2f\n",
-//            v.id,
-//            v.brandName,
-//            v.name,
-//            v.kcal
-//        )));
-//      }
-//
-//      @Override
-//      public void onFailure(Call<SearchResultPOJO> call, Throwable t) {
-//        Log.d("FDCService", t.getMessage());
-//        Log.d("FDCService", call.request().toString());
-//      }
-//    });
+            break;
+          case 1:
+            Log.d("viewPager", "Search Fragment");
+            RecyclerView searchResultRecyclerView = findViewById(R.id.searchResultRecyclerView);
+            final FoodItemAdapter foodItemAdapter = new FoodItemAdapter();
+            searchResultRecyclerView.setAdapter(foodItemAdapter);
+            searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            searchResultRecyclerView.setHasFixedSize(true);
+
+
+            searchResultViewModel.searchFood("celery");
+            searchResultViewModel.getResults().observe(MainActivity.this, foodItemAdapter::setItems);
+
+            break;
+          case 2:
+            Log.d("viewPager", "Data Fragment");
+            break;
+        }
+
+      }
+
+      @Override
+      public void onPageScrollStateChanged(int state) {
+
+      }
+    });
+
+
+
   }
 
 }

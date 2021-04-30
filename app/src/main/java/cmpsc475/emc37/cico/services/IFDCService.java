@@ -10,6 +10,6 @@ import retrofit2.http.Query;
 public interface IFDCService {
 
   @GET("/fdc/v1/foods/search")
-  Call<SearchResultPOJO> searchFoods(@Query("api_key") String key, @Query("query") String foodName);
+  Call<SearchResultPOJO> searchFood(@Query("api_key") String key, @Query("query") String foodName);
 
 }

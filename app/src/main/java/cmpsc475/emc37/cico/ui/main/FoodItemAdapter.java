@@ -8,9 +8,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cmpsc475.emc37.cico.MainActivity;
 import cmpsc475.emc37.cico.R;
 import cmpsc475.emc37.cico.models.SearchResultDTO;
 
@@ -34,7 +37,7 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.FoodIt
   @Override
   public FoodItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View itemView = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.food_item, parent, false);
+                                  .inflate(R.layout.food_item, parent, false);
     return new FoodItemHolder(itemView);
   }
 
@@ -44,6 +47,10 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.FoodIt
     holder.foodName.setText(currentItem.name);
     holder.brandName.setText(currentItem.brandName);
     holder.kcal.setText(String.valueOf((int) currentItem.kcal));
+
+    holder.itemView.setOnClickListener(v -> {
+      Snackbar.make(v, holder.foodName.getText(), Snackbar.LENGTH_LONG).show();
+    });
   }
 
   @Override
