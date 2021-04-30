@@ -25,5 +25,11 @@ public class EntryViewModel extends AndroidViewModel {
     return mAllEntries;
   }
 
-  public void insert(Entry entry) {mRepository.insert(entry);}
+  public void insert(Entry entry) {
+    mRepository.insert(entry);
+  }
+
+  public void deleteAllEntries() {
+    mRepository.deleteAllEntries();
+  }
 }

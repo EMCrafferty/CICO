@@ -15,7 +15,7 @@ public class Entry {
   public static class Food {
     private String name;
     private int kcal;
-    private double servings;
+    private double grams;
 
     public String getName() {
       return name;
@@ -33,18 +33,18 @@ public class Entry {
       this.kcal = kcal;
     }
 
-    public double getServings() {
-      return servings;
+    public double getGrams() {
+      return grams;
     }
 
-    public void setServings(double servings) {
-      this.servings = servings;
+    public void setGrams(double grams) {
+      this.grams = grams;
     }
 
-    public Food(String name, int kcal, double servings) {
+    public Food(String name, int kcal, double grams) {
       setName(name);
       setKcal(kcal);
-      setServings(servings);
+      setGrams(grams);
     }
 
     @NonNull
@@ -55,7 +55,7 @@ public class Entry {
       sb.append("( ")
         .append(getName()).append(' ')
         .append(getKcal()).append(' ')
-        .append(getServings()).append(' ')
+        .append(getGrams()).append(' ')
         .append(')');
 
       return sb.toString();

@@ -6,6 +6,7 @@ import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -22,6 +23,7 @@ import cmpsc475.emc37.cico.services.CICORepository;
 import cmpsc475.emc37.cico.services.FDCService;
 import cmpsc475.emc37.cico.services.IFDCService;
 import cmpsc475.emc37.cico.ui.main.SectionsPagerAdapter;
+import cmpsc475.emc37.cico.viewmodels.EntryViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +31,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+  private EntryViewModel entryViewModel;
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -45,24 +48,44 @@ public class MainActivity extends AppCompatActivity {
     viewPager.setAdapter(sectionsPagerAdapter);
     TabLayout tabs = findViewById(R.id.tabs);
     tabs.setupWithViewPager(viewPager);
-    //
+
+    // VIEWMODEL TESTING:
+//    entryViewModel = new ViewModelProvider(this).get(EntryViewModel.class);
+    entryViewModel = new ViewModelProvider(
+        this,
+        ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(EntryViewModel.class);
+
+    entryViewModel.getAllEntries()
+                  .observe(this,
+                           entries -> entries.forEach(e -> Log.d("ROOM", ".\n" + e.toString())));
+
+    findViewById(R.id.foodSearch);
+//    entryViewModel.deleteAllEntries();
+
+//    entryViewModel.insert(
+//        new Entry(
+//            420,
+//            Arrays.asList(
+//                new Entry.Food("Egg", 280, 4.0),
+//                new Entry.Food("Egg", 140, 2.0)
+//            ),
+//            OffsetDateTime.now())
+//    );
 
     // ROOM TESTING:
-    CICORepository repo = new CICORepository(getApplication());
-    repo.getAllEntries()
-        .observe(this, entries -> entries.forEach(e -> Log.d("ROOM", ".\n" + e.toString())));
-    repo.deleteAllEntries();
-    repo.insert(
-        new Entry(
-            420,
-            Arrays.asList(
-                new Entry.Food("Egg", 280, 4.0),
-                new Entry.Food("Egg", 140, 2.0)
-            ),
-            OffsetDateTime.now())
-    );
-
-
+//    CICORepository repo = new CICORepository(getApplication());
+//    repo.getAllEntries()
+//        .observe(this, entries -> entries.forEach(e -> Log.d("ROOM", ".\n" + e.toString())));
+////    repo.deleteAllEntries();
+//    repo.insert(
+//        new Entry(
+//            420,
+//            Arrays.asList(
+//                new Entry.Food("Egg", 280, 4.0),
+//                new Entry.Food("Egg", 140, 2.0)
+//            ),
+//            OffsetDateTime.now())
+//    );
 
     // RETROFIT TESTING:
 

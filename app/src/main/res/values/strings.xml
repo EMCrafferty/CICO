@@ -9,4 +9,5 @@
     <string name="food">Food</string>
     <string name="kcal">kcal</string>
     <string name="total">Total</string>
+    <string name="kcal_g">kcal/100g</string>
 </resources>
