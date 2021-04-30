@@ -3,8 +3,8 @@ package cmpsc475.emc37.cico.models;
 import java.util.List;
 
 public class SearchResultPOJO {
-  public class FDCFood {
-    public class Nutrients {
+  public static class FDCFood {
+    public static class Nutrients {
       int nutrientId;
       int number;
       String name;
@@ -21,6 +21,10 @@ public class SearchResultPOJO {
         this.unitName = unitName;
         this.derivationCode = derivationCode;
         this.derivationDescription = derivationDescription;
+      }
+
+      public Nutrients() {
+
       }
 
       public int getNutrientId() {

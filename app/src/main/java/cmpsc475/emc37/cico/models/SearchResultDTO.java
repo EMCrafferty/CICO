@@ -1,16 +1,17 @@
 package cmpsc475.emc37.cico.models;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class SearchResultDTO {
   public final int id;
   public final String brandName;
   public final String name;
-  public final double kcal;
+  public final Double kcal;
 
 
-  public SearchResultDTO(int id, String brandName, String name, double kcal) {
+  public SearchResultDTO(int id, String brandName, String name, Double kcal) {
     this.id = id;
     this.brandName = brandName;
     this.name = name;
@@ -25,9 +26,9 @@ public class SearchResultDTO {
         food.getFoodNutrients()
             .stream()
             .filter(v -> v.getNutrientId() == SearchResultPOJO.NUTRIENTS.KCAL.code)
+            .map(v -> v.getValue())
             .findFirst()
-            .get()
-            .getValue()
+            .orElse(null)
     );
   }
 

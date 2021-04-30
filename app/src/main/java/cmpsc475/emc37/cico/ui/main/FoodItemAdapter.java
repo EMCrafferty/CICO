@@ -45,7 +45,7 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.FoodIt
     SearchResultDTO currentItem = items.get(position);
     holder.foodName.setText(currentItem.name);
     holder.brandName.setText(currentItem.brandName);
-    holder.kcal.setText(String.valueOf((int) currentItem.kcal));
+    holder.kcal.setText(currentItem.kcal == null ? "N/A" : String.valueOf(currentItem.kcal.intValue()));
 
     holder.itemView.setOnClickListener(v -> {
       Snackbar.make(v, holder.foodName.getText(), Snackbar.LENGTH_LONG).show();

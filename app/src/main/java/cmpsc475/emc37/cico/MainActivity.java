@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     //
 
-    // VIEWMODEL TESTING:
     entryViewModel = new ViewModelProvider(
         this,
         ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(
@@ -88,37 +87,14 @@ public class MainActivity extends AppCompatActivity {
             break;
           case 1:
             Log.d("viewPager", "Search Fragment");
-            RecyclerView searchResultRecyclerView = findViewById(R.id.searchResultRecyclerView);
-            final FoodItemAdapter foodItemAdapter = new FoodItemAdapter();
-            searchResultRecyclerView.setAdapter(foodItemAdapter);
-            searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            searchResultRecyclerView.setHasFixedSize(true);
-            searchResultViewModel.getResults().observe(MainActivity.this, foodItemAdapter::setItems);
-
-            SearchView foodSearch = findViewById(R.id.foodSearch);
-
-            foodSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-              @Override
-              public boolean onQueryTextSubmit(String query) {
-                CICORepository.searchFood(query, foodItemAdapter);
-                foodSearch.clearFocus();
-                return true;
-              }
-
-              @Override
-              public boolean onQueryTextChange(String newText) {
-                return false;
-              }
-            });
-
-
+            loadSearchFragment();
 
             break;
           case 2:
             Log.d("viewPager", "Data Fragment");
+
             break;
         }
-
       }
 
       @Override
@@ -128,6 +104,38 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
+  }
+
+  private void loadSearchFragment() {
+    RecyclerView searchResultRecyclerView = findViewById(R.id.searchResultRecyclerView);
+    if (searchResultViewModel.getFoodItemAdapter() == null)
+      searchResultViewModel.setFoodItemAdapter(new FoodItemAdapter());
+    else
+      searchResultViewModel.getFoodItemAdapter().notifyDataSetChanged();
+
+
+    searchResultRecyclerView.setAdapter(searchResultViewModel.getFoodItemAdapter());
+    searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+    searchResultRecyclerView.setHasFixedSize(true);
+    searchResultViewModel.getResults()
+                         .observe(MainActivity.this,
+                                  searchResultViewModel.getFoodItemAdapter()::setItems);
+
+    SearchView foodSearch = findViewById(R.id.foodSearch);
+
+    foodSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        CICORepository.searchFood(query, searchResultViewModel.getFoodItemAdapter());
+        foodSearch.clearFocus();
+        return true;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        return false;
+      }
+    });
 
   }
 
