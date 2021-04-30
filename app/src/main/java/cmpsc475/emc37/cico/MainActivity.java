@@ -3,6 +3,7 @@ package cmpsc475.emc37.cico;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -13,7 +14,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,10 +93,25 @@ public class MainActivity extends AppCompatActivity {
             searchResultRecyclerView.setAdapter(foodItemAdapter);
             searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             searchResultRecyclerView.setHasFixedSize(true);
-
-
-            searchResultViewModel.searchFood("celery");
             searchResultViewModel.getResults().observe(MainActivity.this, foodItemAdapter::setItems);
+
+            SearchView foodSearch = findViewById(R.id.foodSearch);
+
+            foodSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+              @Override
+              public boolean onQueryTextSubmit(String query) {
+                CICORepository.searchFood(query, foodItemAdapter);
+                foodSearch.clearFocus();
+                return true;
+              }
+
+              @Override
+              public boolean onQueryTextChange(String newText) {
+                return false;
+              }
+            });
+
+
 
             break;
           case 2:

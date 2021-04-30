@@ -13,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-import cmpsc475.emc37.cico.MainActivity;
 import cmpsc475.emc37.cico.R;
 import cmpsc475.emc37.cico.models.SearchResultDTO;
 

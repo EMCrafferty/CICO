@@ -26,25 +26,10 @@ public class SearchResultViewModel extends AndroidViewModel {
   public SearchResultViewModel(@NonNull Application application) {
     super(application);
     results = new MutableLiveData<>(new ArrayList<>());
+
   }
 
-  public void searchFood(String food) {
-    FDCService.searchFood(food).enqueue(new Callback<SearchResultPOJO>() {
-      @Override
-      public void onResponse(@NotNull Call<SearchResultPOJO> call, @NotNull Response<SearchResultPOJO> response) {
-        Log.d("searchFood", "SUCCESS");
-        results.getValue().clear();
-        results.getValue().addAll(SearchResultDTO.parsePOJO(response.body()));
 
-      }
-
-      @Override
-      public void onFailure(@NotNull Call<SearchResultPOJO> call, @NotNull Throwable t) {
-        Log.d("searchFood", "FAILURE");
-        Log.d("searchFood", call.request().toString());
-      }
-    });
-  }
 
   public LiveData<List<SearchResultDTO>> getResults() {
     return results;
