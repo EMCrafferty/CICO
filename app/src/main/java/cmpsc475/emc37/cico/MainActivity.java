@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.time.OffsetDateTime;
@@ -107,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
                                   searchResultViewModel.getFoodItemAdapter()::setItems);
 
     SearchView foodSearch = findViewById(R.id.foodSearch);
+    foodSearch.setIconifiedByDefault(false);
+    foodSearch.setQueryHint("pinto beans...");
 
     foodSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
       @Override
@@ -124,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
   }
 
   public AddFoodDialog displayAddFoodDialog(View foodItem) {
+
     AddFoodDialog addFoodDialog = new AddFoodDialog(foodItem);
     addFoodDialog.show(getSupportFragmentManager(), "addFoodDialog");
     addFoodDialog.getPortion();
@@ -140,5 +144,9 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
     );
 
     repo.insert(entry);
+    Snackbar.make(findViewById(R.id.searchConstraintLayout),
+                  String.format("Logged %s", food.getName()), Snackbar.LENGTH_SHORT)
+            .show();
+
   }
 }

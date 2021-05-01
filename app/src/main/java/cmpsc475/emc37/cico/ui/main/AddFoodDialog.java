@@ -76,9 +76,12 @@ public class AddFoodDialog extends DialogFragment {
              addFoodClickListener.onAddFoodClick(Integer.parseInt(textViewKcals.getText().toString()), packageFood())
            );
 
+    TextView foodName = view.findViewById(R.id.textViewAddFoodTitle);
     portion = view.findViewById(R.id.editTextPortion);
     textViewKcals = view.findViewById(R.id.textViewKcalPortion);
     textViewKcals.setText("0");
+
+    foodName.setText(((TextView) foodItem.findViewById(R.id.textViewFoodName)).getText());
 
     portion.addTextChangedListener(new TextWatcher() {
       @Override
