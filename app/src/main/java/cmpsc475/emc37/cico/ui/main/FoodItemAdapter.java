@@ -22,6 +22,7 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.FoodIt
     private TextView brandName;
     private TextView kcal;
 
+
     public FoodItemHolder(@NonNull View itemView) {
       super(itemView);
       foodName = itemView.findViewById(R.id.textViewFoodName);
@@ -30,7 +31,16 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.FoodIt
     }
   }
 
+  public interface ItemClickListener {
+    void onItemClick(View view);
+  }
+
   private List<SearchResultDTO> items = new ArrayList<>();
+  private ItemClickListener itemClickListener;
+
+  public FoodItemAdapter(ItemClickListener itemClickListener) {
+    this.itemClickListener = itemClickListener;
+  }
 
   @NonNull
   @Override
@@ -47,9 +57,11 @@ public class FoodItemAdapter extends RecyclerView.Adapter<FoodItemAdapter.FoodIt
     holder.brandName.setText(currentItem.brandName);
     holder.kcal.setText(currentItem.kcal == null ? "N/A" : String.valueOf(currentItem.kcal.intValue()));
 
-    holder.itemView.setOnClickListener(v -> {
-      Snackbar.make(v, holder.foodName.getText(), Snackbar.LENGTH_LONG).show();
-    });
+    holder.itemView.setOnClickListener(itemClickListener::onItemClick);
+
+//    holder.itemView.setOnClickListener(v -> {
+//      Snackbar.make(v, holder.foodName.getText(), Snackbar.LENGTH_LONG).show();
+//    });
   }
 
   @Override

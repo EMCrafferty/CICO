@@ -3,10 +3,10 @@ package cmpsc475.emc37.cico;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,34 +14,21 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 import cmpsc475.emc37.cico.models.Entry;
-import cmpsc475.emc37.cico.models.SearchResultDTO;
-import cmpsc475.emc37.cico.models.SearchResultPOJO;
 import cmpsc475.emc37.cico.services.CICORepository;
-import cmpsc475.emc37.cico.services.FDCService;
-import cmpsc475.emc37.cico.services.IFDCService;
 import cmpsc475.emc37.cico.ui.main.AddFoodDialog;
 import cmpsc475.emc37.cico.ui.main.FoodItemAdapter;
 import cmpsc475.emc37.cico.ui.main.SectionsPagerAdapter;
 import cmpsc475.emc37.cico.viewmodels.EntryViewModel;
 import cmpsc475.emc37.cico.viewmodels.SearchResultViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements AddFoodDialog.AddFoodClickListener {
   private EntryViewModel entryViewModel;
   private SearchResultViewModel searchResultViewModel;
+  private CICORepository repo;
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
     tabs.setupWithViewPager(viewPager);
 
     //
+    repo = new CICORepository(getApplication());
 
     entryViewModel = new ViewModelProvider(
         this,
@@ -99,17 +87,14 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
 
       @Override
       public void onPageScrollStateChanged(int state) {
-
       }
     });
-
-
   }
 
   private void loadSearchFragment() {
     RecyclerView searchResultRecyclerView = findViewById(R.id.searchResultRecyclerView);
     if (searchResultViewModel.getFoodItemAdapter() == null)
-      searchResultViewModel.setFoodItemAdapter(new FoodItemAdapter());
+      searchResultViewModel.setFoodItemAdapter(new FoodItemAdapter(this::displayAddFoodDialog));
     else
       searchResultViewModel.getFoodItemAdapter()
                            .notifyDataSetChanged();
@@ -138,8 +123,22 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
     });
   }
 
-  @Override
-  public void onAddFoodClick(Object _dialog, Object _id) {
+  public AddFoodDialog displayAddFoodDialog(View foodItem) {
+    AddFoodDialog addFoodDialog = new AddFoodDialog(foodItem);
+    addFoodDialog.show(getSupportFragmentManager(), "addFoodDialog");
+    addFoodDialog.getPortion();
 
+    return addFoodDialog;
+  }
+
+  @Override
+  public void onAddFoodClick(int portionKcals, Entry.Food food) {
+    Entry entry = new Entry(
+        portionKcals,
+        Collections.singletonList(food),
+        OffsetDateTime.now()
+    );
+
+    repo.insert(entry);
   }
 }
