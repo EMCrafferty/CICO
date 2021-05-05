@@ -5,8 +5,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,11 +21,13 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 
 import cmpsc475.emc37.cico.models.Entry;
 import cmpsc475.emc37.cico.services.CICORepository;
 import cmpsc475.emc37.cico.ui.main.AddFoodDialog;
 import cmpsc475.emc37.cico.ui.main.FoodItemAdapter;
+import cmpsc475.emc37.cico.ui.main.FoodItemEntryAdapter;
 import cmpsc475.emc37.cico.ui.main.SectionsPagerAdapter;
 import cmpsc475.emc37.cico.viewmodels.EntryViewModel;
 import cmpsc475.emc37.cico.viewmodels.SearchResultViewModel;
@@ -30,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
   private EntryViewModel entryViewModel;
   private SearchResultViewModel searchResultViewModel;
   private CICORepository repo;
+  private ViewPager viewPager;
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -42,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
     setContentView(R.layout.activity_main);
     SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this,
                                                                          getSupportFragmentManager());
-    ViewPager viewPager = findViewById(R.id.view_pager);
+    viewPager = findViewById(R.id.view_pager);
     viewPager.setAdapter(sectionsPagerAdapter);
     TabLayout tabs = findViewById(R.id.tabs);
     tabs.setupWithViewPager(viewPager);
@@ -60,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
         ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication())).get(
         SearchResultViewModel.class);
 
-    viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
       @Override
       public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
       }
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
         switch (position) {
           case 0:
             Log.d("viewPager", "Log Fragment");
+            loadLogFragment();
 
             break;
           case 1:
@@ -89,7 +97,38 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
       @Override
       public void onPageScrollStateChanged(int state) {
       }
-    });
+    };
+
+    viewPager.addOnPageChangeListener(onPageChangeListener);
+
+    viewPager.post(() -> onPageChangeListener.onPageSelected(viewPager.getCurrentItem()));
+    // for some reason, necessary to have my log page load the first time.
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+//    viewPager.setCurrentItem(1);
+  }
+
+  private void loadLogFragment() {
+    RecyclerView logRecyclerView = findViewById(R.id.logRecyclerView);
+    LiveData<List<Entry>> entries = entryViewModel.getAllEntries();
+
+    if (entryViewModel.getEntryAdapter() == null)
+      entryViewModel.setEntryAdapter(new FoodItemEntryAdapter(
+          v -> Toast.makeText(this, ((TextView) v.findViewById(R.id.textViewFoodName)).getText(),
+                              Toast.LENGTH_SHORT)
+                    .show()));
+    else
+      entryViewModel.getEntryAdapter()
+                    .notifyDataSetChanged();
+
+    logRecyclerView.setAdapter(entryViewModel.getEntryAdapter());
+    logRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+    entries.observe(MainActivity.this, entryViewModel.getEntryAdapter()::setItems);
+    entryViewModel.getEntryAdapter().notifyDataSetChanged();
   }
 
   private void loadSearchFragment() {
@@ -102,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
 
     searchResultRecyclerView.setAdapter(searchResultViewModel.getFoodItemAdapter());
     searchResultRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-    searchResultRecyclerView.setHasFixedSize(true);
     searchResultViewModel.getResults()
                          .observe(MainActivity.this,
                                   searchResultViewModel.getFoodItemAdapter()::setItems);
@@ -130,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements AddFoodDialog.Add
 
     AddFoodDialog addFoodDialog = new AddFoodDialog(foodItem);
     addFoodDialog.show(getSupportFragmentManager(), "addFoodDialog");
-    addFoodDialog.getPortion();
 
     return addFoodDialog;
   }

@@ -21,12 +21,12 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
   @StringRes
   private static final int[] TAB_TITLES = new int[]{
-      R.string.log, R.string.search, R.string.data
+      R.string.log, R.string.search, R.string.settings
   };
 
   @LayoutRes
   private static final int[] LAYOUT_IDS = new int[]{
-      R.layout.log_fragment, R.layout.search_fragment, R.layout.data_fragment
+      R.layout.log_fragment, R.layout.search_fragment, R.layout.settings_fragment
   };
   private final Context mContext;
 

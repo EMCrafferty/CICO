@@ -17,6 +17,7 @@ import cmpsc475.emc37.cico.models.EntryDAO;
 import cmpsc475.emc37.cico.models.SearchResultDTO;
 import cmpsc475.emc37.cico.models.SearchResultPOJO;
 import cmpsc475.emc37.cico.ui.main.FoodItemAdapter;
+import cmpsc475.emc37.cico.ui.main.FoodItemEntryAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

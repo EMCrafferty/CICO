@@ -4,7 +4,6 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="log">log</string>
     <string name="search">search</string>
-    <string name="data">data</string>
     <string name="settings">settings</string>
     <string name="food">Food</string>
     <string name="kcal">kcal</string>
@@ -14,4 +13,5 @@
     <string name="portion">Portion</string>
     <string name="fillerNum">420</string>
     <string name="fillerText">Lorem Ipsum</string>
+    <string name="no_settings">I don\'t have any settings</string>
 </resources>

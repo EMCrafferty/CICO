@@ -10,26 +10,36 @@ import java.util.List;
 
 import cmpsc475.emc37.cico.models.Entry;
 import cmpsc475.emc37.cico.services.CICORepository;
+import cmpsc475.emc37.cico.ui.main.FoodItemEntryAdapter;
 
 public class EntryViewModel extends AndroidViewModel {
-  private final CICORepository mRepository;
-  private final LiveData<List<Entry>> mAllEntries;
+  private final CICORepository repository;
+  private final LiveData<List<Entry>> allEntries;
+  private FoodItemEntryAdapter entryAdapter;
 
   public EntryViewModel(@NonNull Application application) {
     super(application);
-    mRepository = new CICORepository(application);
-    mAllEntries = mRepository.getAllEntries();
+    repository = new CICORepository(application);
+    allEntries = repository.getAllEntries();
   }
 
   public LiveData<List<Entry>> getAllEntries() {
-    return mAllEntries;
+    return allEntries;
   }
 
   public void insert(Entry entry) {
-    mRepository.insert(entry);
+    repository.insert(entry);
   }
 
   public void deleteAllEntries() {
-    mRepository.deleteAllEntries();
+    repository.deleteAllEntries();
+  }
+
+  public FoodItemEntryAdapter getEntryAdapter() {
+    return entryAdapter;
+  }
+
+  public void setEntryAdapter(FoodItemEntryAdapter entryAdapter) {
+    this.entryAdapter = entryAdapter;
   }
 }
